@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.map
 class ClimaDatoRepository(
     private val dao: ClimaDatoDao,
     private val climaRepositorio: ClimaRepository = ClimaRepository(),
-    private val gatosRepositorio: GatosRepository = GatosRepository()
+    private val gatosRepositorio: GatosRepository = GatosRepository(),
 ) {
 
     fun observarTodos(): Flow<List<ClimaDato>> =
@@ -21,8 +21,8 @@ class ClimaDatoRepository(
             is Resultado.Exito -> r.datos
             is Resultado.Error -> return Resultado.Error(r.mensaje)
         }
-        val dato = when (val r = gatosRepositorio.obtenerDatos(1)) {
-            is Resultado.Exito -> r.datos.firstOrNull()
+        val dato = when (val r = gatosRepositorio.obtenerDatos(20)) {
+            is Resultado.Exito -> r.datos.randomOrNull()
                 ?: return Resultado.Error("La API de gatos no devolvió datos.")
             is Resultado.Error -> return Resultado.Error(r.mensaje)
         }
